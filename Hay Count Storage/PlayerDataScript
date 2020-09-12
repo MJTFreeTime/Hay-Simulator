@@ -1,0 +1,43 @@
+-- Services
+local Players = game:GetService("Players")
+local DataStoreService = game:GetService("DataStoreService")
+
+-- Variables
+local hayDataStore = DataStoreService:GetDataStore("hayDataStore")
+
+local function playerJoined(player)
+	local board = Instance.new("Model", player)
+	board.Name = "leaderstats"
+	
+	local hayCollected = Instance.new("IntValue", board)
+	hayCollected.Name = "Hay"
+	
+	local hayData = nil
+	local success, errormessage = pcall(function()
+		hayData = hayDataStore:GetAsync(player.UserId .. "-hay")
+	end)
+	
+	if success then
+		hayCollected.Value = hayData
+	else
+		print("There was an error whilst getting your data")
+		warn(errormessage)
+	end
+end
+
+Players.PlayerAdded:Connect(playerJoined)
+
+local function playerLeaving(player)
+	local success, errormessage = pcall(function()
+		hayDataStore:SetAsync(player.UserId .. "-hay", player.leaderstats.Hay.Value)
+	end)
+	
+	if success then
+		print("Player Data successfully saved!")
+	else
+		print("There was an error when saving player data...")
+		warn(errormessage)
+	end
+end
+
+Players.PlayerRemoving:Connect(playerLeaving)
