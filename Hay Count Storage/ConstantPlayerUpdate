@@ -1,0 +1,25 @@
+-- Services
+local Players = game:GetService("Players")
+local DataStoreService = game:GetService("DataStoreService")
+
+-- Variables
+local hayDataStore = DataStoreService:GetDataStore("hayDataStore")
+
+local function update(player)
+	while player do
+		wait(60)
+		
+		local success, errormessage = pcall(function()
+			hayDataStore:SetAsync(player.UserId .. "-hay", player.leaderstats.Hay.Value)
+		end)
+		
+		if success then
+			print("Player Data successfully saved!")
+		else
+			print("There was an error when saving player data...")
+			warn(errormessage)
+		end
+	end
+end
+
+Players.PlayerAdded:Connect(update)
