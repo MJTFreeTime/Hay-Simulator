@@ -1,0 +1,7 @@
+-- Variables
+local hayCountGUI = script.Parent
+local hayCount = game.Players.LocalPlayer.leaderstats["Hay"]
+
+hayCount.Changed:Connect(function()
+	hayCountGUI.Text = ("Hay Collected: " .. tostring(hayCount.Value))
+end)
