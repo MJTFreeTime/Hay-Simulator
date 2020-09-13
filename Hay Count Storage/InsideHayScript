@@ -3,27 +3,27 @@ local Players = game:GetService("Players")
 
 -- Variables
 local hay = script.Parent
+local clickDetector = hay.ClickDetector
 local timeToReappear = script.Parent.timeToReappear
 
 local timeout = true
 
-local function hayTouched(hit)
+local function hayTouched(player)
+	print("Yeet")
 	if timeout == true then
-		if hit.Parent:IsA("Model") and hit.Parent:FindFirstChild("Humanoid") then
-			local player = Players:GetPlayerFromCharacter(hit.Parent)
-			if player then
-				timeout = false
-				local hayCollected = player.leaderstats["Hay"]
-				
-				hayCollected.Value += 1
-				
-				hay.Transparency = 1
-				wait(timeToReappear.Value)
-				hay.Transparency = 0
-				timeout = true
-			end
+		timeout = false
+		local hayCollected = player.leaderstats["Hay"]
+		
+		hayCollected.Value += 1
+		
+		while hay.Transparency < 1 do
+			hay.Transparency += 0.2
+			wait(0.05)
 		end
+		wait(timeToReappear.Value)
+		hay.Transparency = 0
+		timeout = true
 	end
 end
 
-hay.Touched:Connect(hayTouched)
+clickDetector.MouseClick:Connect(hayTouched)
