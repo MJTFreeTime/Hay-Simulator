@@ -2,6 +2,8 @@
 local hayCountGUI = script.Parent
 local hayCount = game.Players.LocalPlayer.leaderstats["Hay"]
 
+hayCountGUI.Text = ("Hay Collected: " .. tostring(hayCount.Value))
+
 hayCount.Changed:Connect(function()
 	hayCountGUI.Text = ("Hay Collected: " .. tostring(hayCount.Value))
 end)
